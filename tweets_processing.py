@@ -16,7 +16,7 @@ schema = StructType([StructField('id', LongType(), True),
                      StructField('tweet_text', StringType(), True),
                      StructField('tweet_date', TimestampType(), False)])
                         
-df_XPTO = spark.read.schema(schema).json('YOUR/PATH/TO/JSON/FILES/*/*')
+df_XPTO = spark.read.schema(schema).json('s3:YOUR/PATH/TO/JSON/FILES/*/*')
 
 # Transform emoticons find in tweet text to emoticons that are being analyzed (Didn't know how to read emoticons
 emoticons = {"😀": ":D", "😃":"=D", "😄":":D", "🤣":":'D", "😂": ":'D", "😉":";)", "😊":":)", "😍":":D",
@@ -85,4 +85,4 @@ df_final = df_fullTable.withColumn("year", date_format(col("tweet_date"), "yyyy"
 
 # Create files particioned by year,month and day based on AWS recommendations
  df_final.write.partitionBy("year", "month", "day")\
-    .parquet("s3://xpto-ref-davi-sena/twitter/sa-east-1/TWITTER_ELEICOES/", mode="append")
+    .parquet("s3:YOUR/PATH/TO/SAVE/FILES/", mode="append")
